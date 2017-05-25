@@ -1,7 +1,6 @@
 var io = require("socket.io");
 var util = require("../lib/util");
 
-var online_clients = {};
 
 var event = {
   connection: "connection",
@@ -47,8 +46,6 @@ function mountWebsocketService(server) {
         if (rs.length > 0) {
           var user = rs[0];
           var user_id = user.id;
-          var user_clients = online_clients[user.id] = online_clients[user.id] || {};
-          user_clients[socket.id] = socket;
           socket.join(user_id);
 
           socket.on(event.notification.new, async (payload, cb) => {
@@ -103,4 +100,4 @@ function mountWebsocketService(server) {
   return ws_server;
 }
 
-module.exports = { mountWebsocketService, online_clients }
+module.exports = { mountWebsocketService }
