@@ -12,7 +12,7 @@ router.all("/token", async function (req, res, next) {
         "message": "check your email to get token"
       });
     } else {
-      next(new Error("Registe need a mail address"));
+      throw new Error("Registe need a mail address");
     }
   } catch (error) {
     next(error)
