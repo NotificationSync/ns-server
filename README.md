@@ -9,7 +9,11 @@ npm i
 npm start
 ```
 
-## api
+## AUTH
+
+API in path ```/api/v1/notification``` need a specific header named ```x-ns-token```, value will be sent to user mailbox when client use api ```/api/v1/user/token```
+
+## API
 
 * GET /api/v1/ , welcome
 * POST /api/v1/user/token , with json body like ```{"mail":"your@mail.com"}```
