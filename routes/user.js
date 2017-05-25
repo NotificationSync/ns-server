@@ -8,7 +8,7 @@ router.all("/token", async function (req, res, next) {
     if (user && user.mail) {
       await util.saveNewToken(user);
       res.json({
-        "status": "200",
+        "status": 200,
         "message": "check your email to get token"
       });
     } else {
