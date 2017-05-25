@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var event = require("../ws/index").event;
 var util = require("../lib/util");
 
 router.all("*", async function (req, res, next) {
@@ -23,11 +24,15 @@ router.all("*", async function (req, res, next) {
 
 router.post("*", async function (req, res, next) {
   var notification = req.body;
+  var user = res.locals.user;
+  var io = req.app.locals.io;
   try {
-    var success = await util.saveNewNotification(res.locals.user, notification);
+    var rs = await util.saveNewNotification(user, notification);
+    notification.id = rs.insertId
+    io.to(user.id).emit(event.notification.new, notification);
     res.json({
       status: "200",
-      success: success
+      result: "push and saved"
     })
   } catch (error) {
     next(error);

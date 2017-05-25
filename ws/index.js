@@ -36,7 +36,8 @@ function mountWebsocketService(server) {
       } catch (error) {
         message = new Message(error.message, 500);
       }
-      cb(message);
+      if (cb)
+        cb(message);
     });
 
     socket.on(event.user.mytoken, async (payload, cb) => {
@@ -52,36 +53,44 @@ function mountWebsocketService(server) {
             try {
               await util.saveNewNotification(user, payload);
               socket.to(user_id).emit(event.notification.new, payload);
-              cb(new Message("new notification saved"))
+              if (cb)
+                cb(new Message("new notification saved"))
             } catch (error) {
-              cb(new Message(error.message, 500));
+              if (cb)
+                cb(new Message(error.message, 500));
             }
           });
 
           socket.on(event.notification.unread, async (payloda, cb) => {
             try {
               var notifications = await util.findNotificationUnreaded(user);
-              cb(notifications);
+              if (cb)
+                cb(notifications);
             } catch (error) {
-              cb(new Message(error.message, 500));
+              if (cb)
+                cb(new Message(error.message, 500));
             }
           });
 
           socket.on(event.notification.all, async (payloda, cb) => {
             try {
               var notifications = await util.findNotificationByUser(user);
-              cb(notifications);
+              if (cb)
+                cb(notifications);
             } catch (error) {
-              cb(new Message(error.message, 500));
+              if (cb)
+                cb(new Message(error.message, 500));
             }
           });
 
           socket.on(event.notification.read, async (ids, cb) => {
             try {
               await util.updateNotificationAsReaded(ids);
-              cb(new Message(`make ${ids} readed`));
+              if (cb)
+                cb(new Message(`make ${ids} readed`));
             } catch (error) {
-              cb(new Message(error.message, 500));
+              if (cb)
+                cb(new Message(error.message, 500));
             }
           });
 
@@ -91,7 +100,8 @@ function mountWebsocketService(server) {
       } catch (error) {
         message = new Message(error.message, 500);
       }
-      cb(message);
+      if (cb)
+        cb(message);
     });
 
 
@@ -100,4 +110,4 @@ function mountWebsocketService(server) {
   return ws_server;
 }
 
-module.exports = { mountWebsocketService }
+module.exports = { mountWebsocketService, event }

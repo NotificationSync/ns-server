@@ -28,7 +28,9 @@ var server = http.createServer(app);
 /**
  * mount websocket to app
  */
-ws.mountWebsocketService(server);
+var io = ws.mountWebsocketService(server);
+
+app.locals.io = io;
 
 /**
  * Listen on provided port, on all network interfaces.
