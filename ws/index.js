@@ -25,6 +25,12 @@ class Message {
 }
 
 
+/**
+ * 
+ * 
+ * @param {any} server 
+ * @returns 
+ */
 function mountWebsocketService(server) {
   var ws_server = io(server);
   ws_server.on(event.connection, socket => {
